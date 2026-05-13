@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Branch {
+  id      Int      @id @default(autoincrement())
+  name    String
+  code    String   @unique
+  iphones Iphone[]
+}
+
+model Iphone {
+  id                Int      @id @default(autoincrement())
+  model             String
+  capacity          String
+  imei              String?  // New IMEI field
+  batteryStatus     String   // "Original" or "Nueva 100%"
+  batteryPercentage Int?     // Only if status is "Original"
+  price             Float
+  discountType      String   @default("N/A") // "OFF1", "OFF2", or "N/A"
+  observations      String?
+  branch            Branch   @relation(fields: [branchId], references: [id])
+  branchId          Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}

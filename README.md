@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📱 iPhone Stock Manager
 
-## Getting Started
+Sistema de gestión de inventario profesional para la administración de stock de iPhones a través de múltiples sucursales. Diseñado para ser rápido, seguro y con cálculos de precios automatizados.
 
-First, run the development server:
+## 🚀 Características Principales
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Gestión Multi-Sucursal:** Control de stock dividido en 4 sucursales estratégicas:
+  - Abasto Fix (FX01)
+  - Swop Tech (SWP13)
+  - Abasto 2 (IC01) - Arriba
+  - Abasto 1 (IC02) - Abajo
+- **Cálculos Automáticos:** El sistema calcula dinámicamente:
+  - Precio Contado (15% OFF)
+  - Descuentos Especiales (OFF1: -$20,000 / OFF2: -$40,000)
+  - Financiación (Planes de 3 y 6 cuotas)
+- **Control de Estado:** Seguimiento detallado de salud de batería (Original vs Nueva) y registro de IMEI.
+- **Seguridad por Roles:**
+  - **Admin:** Acceso total (Crear, Editar, Eliminar).
+  - **Viewer:** Modo consulta (Solo lectura).
+- **Interfaz Moderna:** Diseño basado en una paleta de grises profesional con Tailwind CSS y Next.js 16.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Stack Tecnológico
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend:** [Next.js 16](https://nextjs.org/) (App Router)
+- **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
+- **Base de Datos:** [PostgreSQL](https://www.postgresql.org/)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Sesiones:** [Iron Session](https://github.com/vvo/iron-session)
+- **Iconos:** [Lucide React](https://lucide.dev/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ⚙️ Configuración del Entorno
 
-## Learn More
+Para ejecutar este proyecto localmente, asegúrate de tener instalados Node.js y Docker.
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clonar el repositorio:**
+   ```bash
+   git clone <url-del-repositorio>
+   cd app-iphones-stock
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Configurar variables de entorno:**
+   Crea un archivo `.env` en la raíz con el siguiente formato:
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/iphone_stock?schema=public"
+   
+   ADMIN_PASSWORD="tu_clave_admin"
+   VIEWER_PASSWORD="tu_clave_viewer"
+   SESSION_PASSWORD="clave_secreta_de_32_caracteres_minimo"
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Levantar la Base de Datos:**
+   ```bash
+   docker compose up -d
+   ```
 
-## Deploy on Vercel
+4. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **Preparar la Base de Datos:**
+   ```bash
+   npx prisma migrate dev
+   npx prisma db seed
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. **Iniciar servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
+
+## 📂 Estructura del Proyecto
+
+- `src/app/`: Rutas y páginas principales.
+- `src/components/`: Componentes de interfaz (Dashboard, Formularios).
+- `src/lib/`: Lógica de servidor, acciones, tipos y utilidades de Prisma/Sesión.
+- `src/proxy.ts`: Middleware de seguridad y protección de rutas (Convención Next.js 16).
+- `prisma/`: Esquema de base de datos y scripts de inicialización (Seed).
+
+## 🔒 Seguridad
+
+El sistema utiliza la convención `proxy.ts` de Next.js 16 para asegurar que solo usuarios autenticados puedan acceder al dashboard. Las sesiones están encriptadas y las contraseñas se gestionan de forma segura a través de variables de entorno.
+
+---
+Desarrollado para la gestión eficiente de stock de dispositivos Apple.
