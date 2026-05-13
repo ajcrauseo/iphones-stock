@@ -112,7 +112,7 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
                   type="number"
                   name="batteryPercentage"
                   required
-                  defaultValue={iphone?.batteryPercentage}
+                  defaultValue={iphone?.batteryPercentage ?? undefined}
                   placeholder="%"
                   className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 bg-gray-50"
                 />
@@ -151,7 +151,7 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
             <label className="block text-sm font-medium text-gray-700">Observaciones</label>
             <textarea
               name="observations"
-              defaultValue={iphone?.observations}
+              defaultValue={iphone?.observations ?? undefined}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 bg-gray-50"
               rows={2}
             />

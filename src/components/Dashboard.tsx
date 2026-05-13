@@ -199,7 +199,7 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
                       </div>
                     </td>
                     <td className="px-4 py-4">
-                      <p className="text-gray-500 italic text-xs max-w-[150px] truncate" title={iphone.observations}>
+                      <p className="text-gray-500 italic text-xs max-w-[150px] truncate" title={iphone.observations ?? undefined}>
                         {iphone.observations || '-'}
                       </p>
                     </td>
