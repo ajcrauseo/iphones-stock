@@ -11,6 +11,7 @@ export async function createIphone(formData: FormData) {
 
   const model = formData.get('model') as string;
   const capacity = formData.get('capacity') as string;
+  const color = formData.get('color') as string;
   const imei = formData.get('imei') as string;
   const batteryStatus = formData.get('batteryStatus') as string;
   const batteryPercentage = formData.get('batteryPercentage') ? parseInt(formData.get('batteryPercentage') as string) : null;
@@ -23,6 +24,7 @@ export async function createIphone(formData: FormData) {
     data: {
       model,
       capacity,
+      color,
       imei,
       batteryStatus,
       batteryPercentage,
@@ -42,6 +44,7 @@ export async function updateIphone(id: number, formData: FormData) {
 
   const model = formData.get('model') as string;
   const capacity = formData.get('capacity') as string;
+  const color = formData.get('color') as string;
   const imei = formData.get('imei') as string;
   const batteryStatus = formData.get('batteryStatus') as string;
   const batteryPercentage = formData.get('batteryPercentage') ? parseInt(formData.get('batteryPercentage') as string) : null;
@@ -55,6 +58,7 @@ export async function updateIphone(id: number, formData: FormData) {
     data: {
       model,
       capacity,
+      color,
       imei,
       batteryStatus,
       batteryPercentage,

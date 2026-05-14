@@ -8,6 +8,7 @@ export interface Iphone {
   id: number;
   model: string;
   capacity: string;
+  color: string | null;
   imei: string | null;
   batteryStatus: string;
   batteryPercentage: number | null;
