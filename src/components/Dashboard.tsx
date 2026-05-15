@@ -454,7 +454,7 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
                     </td>
                     {role === 'admin' && (
                       <td className="px-4 py-4 whitespace-nowrap">
-                        <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex justify-center gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => { setEditingIphone(iphone); setIsFormOpen(true); }}
                             className="p-1.5 text-gray-400 dark:text-gray-600 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-lg transition-all"
