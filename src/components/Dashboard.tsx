@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { deleteIphone } from '@/lib/iphoneActions';
 import IphoneForm from './IphoneForm';
-import { Edit2, Trash2, Smartphone, Battery, CreditCard, Tag, Search, Filter, X, Palette } from 'lucide-react';
+import { Edit2, Trash2, Smartphone, Battery, CreditCard, Tag, Search, Filter, X, Palette, AlertTriangle } from 'lucide-react';
 import { IPHONE_MODELS, IPHONE_CAPACITIES, ALL_IPHONE_COLORS, COLOR_MAP } from '@/lib/constants';
 
 import { Branch, Iphone } from '@/lib/types';
@@ -18,6 +18,8 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
   const [activeBranchId, setActiveBranchId] = useState(branches[0]?.id);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingIphone, setEditingIphone] = useState<Iphone | null>(null);
+  const [iphoneToDelete, setIphoneToDelete] = useState<Iphone | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Filter and Search States
   const [searchQuery, setSearchQuery] = useState('');
@@ -462,7 +464,7 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={async () => { if (confirm('¿Eliminar este iPhone?')) await deleteIphone(iphone.id); }}
+                            onClick={() => setIphoneToDelete(iphone)}
                             className="p-1.5 text-gray-400 dark:text-gray-600 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -490,6 +492,52 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
           iphone={editingIphone}
           onClose={() => setIsFormOpen(false)}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {iphoneToDelete && (
+        <div className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-sm border border-gray-200 dark:border-gray-800 animate-in zoom-in duration-200">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-16 h-16 bg-red-50 dark:bg-red-950/30 rounded-full flex items-center justify-center border border-red-100 dark:border-red-900">
+                <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-500" />
+              </div>
+              
+              <div className="space-y-2">
+                <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">
+                  ¿Eliminar equipo?
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                  Estás por eliminar el <span className="font-bold text-gray-900 dark:text-gray-200">{iphoneToDelete.model}</span> ({iphoneToDelete.capacity}). Esta acción no se puede deshacer.
+                </p>
+              </div>
+
+              <div className="flex w-full gap-3 pt-2">
+                <button
+                  onClick={() => setIphoneToDelete(null)}
+                  disabled={isDeleting}
+                  className="flex-1 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all active:scale-95 disabled:opacity-50"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={async () => {
+                    setIsDeleting(true);
+                    await deleteIphone(iphoneToDelete.id);
+                    setIsDeleting(false);
+                    setIphoneToDelete(null);
+                  }}
+                  disabled={isDeleting}
+                  className="flex-1 py-2.5 bg-red-600 dark:bg-red-500 text-white font-bold rounded-xl hover:bg-red-700 dark:hover:bg-red-600 transition-all shadow-lg shadow-red-500/20 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isDeleting ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : 'Eliminar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
