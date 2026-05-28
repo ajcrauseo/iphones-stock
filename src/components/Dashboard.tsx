@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { deleteIphone } from '@/lib/iphoneActions';
 import IphoneForm from './IphoneForm';
 import { Edit2, Trash2, Smartphone, Battery, CreditCard, Tag, Search, Filter, X, Palette, AlertTriangle } from 'lucide-react';
@@ -114,16 +115,24 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
           <p className="text-gray-500 dark:text-gray-400">Gestión de inventario profesional</p>
         </div>
         {role === 'admin' && (
-          <button
-            onClick={() => {
-              setEditingIphone(null);
-              setIsFormOpen(true);
-            }}
-            className="w-full md:w-auto px-6 py-2.5 bg-green-600 dark:bg-green-500 text-white font-bold rounded-xl shadow-lg shadow-green-500/20 hover:bg-green-700 dark:hover:bg-green-600 transition-all active:scale-95 flex items-center justify-center gap-2"
-          >
-            <Smartphone className="w-5 h-5" />
-            + Agregar iPhone
-          </button>
+          <div className="flex gap-2 w-full md:w-auto">
+            <Link 
+              href="/prices"
+              className="w-full md:w-auto px-6 py-2.5 bg-blue-600 dark:bg-blue-500 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 dark:hover:bg-blue-600 transition-all active:scale-95 flex items-center justify-center gap-2"
+            >
+              Lista de Precios
+            </Link>
+            <button
+              onClick={() => {
+                setEditingIphone(null);
+                setIsFormOpen(true);
+              }}
+              className="w-full md:w-auto px-6 py-2.5 bg-green-600 dark:bg-green-500 text-white font-bold rounded-xl shadow-lg shadow-green-500/20 hover:bg-green-700 dark:hover:bg-green-600 transition-all active:scale-95 flex items-center justify-center gap-2"
+            >
+              <Smartphone className="w-5 h-5" />
+              + Agregar iPhone
+            </button>
+          </div>
         )}
       </div>
 

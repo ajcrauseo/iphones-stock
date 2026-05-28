@@ -30,3 +30,15 @@ model Iphone {
   updatedAt         DateTime @updatedAt
   branch            Branch   @relation(fields: [branchId], references: [id])
 }
+
+model CatalogPrice {
+  id            Int      @id @default(autoincrement())
+  model         String
+  capacity      String
+  color         String   @default("") // Empty string = all colors
+  price         Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([model, capacity, color])
+}
