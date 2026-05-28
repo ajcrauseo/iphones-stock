@@ -51,9 +51,7 @@ export default function LoginPage() {
 
         {/* Glass Card */}
         <div
-          className="relative w-full max-w-md rounded-3xl p-8
-            border border-white/20
-            dark:border-white/10"
+          className="relative w-full max-w-md rounded-3xl p-8 border border-white/20 dark:border-white/10"
           style={{
             background: 'rgba(255, 255, 255, 0.12)',
             backdropFilter: 'blur(40px) saturate(1.8)',
@@ -78,9 +76,7 @@ export default function LoginPage() {
           {/* Logo Badge */}
           <div className="flex justify-center mb-6">
             <div
-              className="flex items-center justify-center w-16 h-16 rounded-2xl
-                border border-white/25
-                text-white text-3xl font-bold select-none"
+              className="flex items-center justify-center w-16 h-16 rounded-2xl border border-white/25 text-white text-3xl font-bold select-none"
               style={{
                 background: 'rgba(255, 255, 255, 0.15)',
                 backdropFilter: 'blur(20px)',
@@ -111,11 +107,7 @@ export default function LoginPage() {
                 type="password"
                 name="password"
                 required
-                className="block w-full px-4 py-3 rounded-xl
-                  text-white placeholder-white/30
-                  border border-white/15
-                  focus:outline-none focus:border-white/35
-                  transition-all duration-300"
+                className="block w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border border-white/15 focus:outline-none focus:border-white/35 transition-all duration-300"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   backdropFilter: 'blur(12px)',
@@ -142,13 +134,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full py-3 px-4 rounded-xl
-                text-sm font-semibold text-white
-                border border-white/20
-                focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-0
-                transition-all duration-300
-                hover:scale-[1.02] active:scale-[0.98]
-                cursor-pointer"
+              className="w-full py-3 px-4 rounded-xl text-sm font-semibold text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-0 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               style={{
                 background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(219, 39, 119, 0.5))',
                 backdropFilter: 'blur(16px)',
