@@ -2,14 +2,27 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ─── CSS Variables ─── */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.2);
+  --glass-hover-bg: rgba(255, 255, 255, 0.18);
+  --glass-active-bg: rgba(255, 255, 255, 0.25);
 }
 
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --glass-hover-bg: rgba(255, 255, 255, 0.12);
+  --glass-active-bg: rgba(255, 255, 255, 0.18);
 }
 
 @theme inline {
@@ -19,8 +32,295 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* ─── Keyframe Animations ─── */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ─── Base Styles ─── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Selection Styles ─── */
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: #ffffff;
+}
+
+.dark ::selection {
+  background: rgba(139, 92, 246, 0.45);
+  color: #ffffff;
+}
+
+/* ─── Animated Gradient Background ─── */
+.gradient-bg {
+  background: linear-gradient(
+    -45deg,
+    #3b82f6,
+    #8b5cf6,
+    #ec4899,
+    #6366f1,
+    #14b8a6
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+.dark .gradient-bg {
+  background: linear-gradient(
+    -45deg,
+    #1e3a5f,
+    #4c1d95,
+    #831843,
+    #312e81,
+    #134e4a
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* ─── Glass Utility ─── */
+.glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 8px 32px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.glass:hover {
+  background: var(--glass-hover-bg);
+  box-shadow:
+    0 12px 40px var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+/* ─── Glass Dark (explicit dark-mode override) ─── */
+.glass-dark {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.glass-dark:hover {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* ─── Glass Input ─── */
+.glass-input {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+  color: inherit;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.glass-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 3px rgba(139, 92, 246, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dark .glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 3px rgba(139, 92, 246, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* ─── Glass Button ─── */
+.glass-button {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.glass-button:active {
+  background: var(--glass-active-bg);
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.dark .glass-button {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.dark .glass-button:active {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Shimmer Effect (for decorative elements) ─── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ─── Float Animation ─── */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ─── Custom Scrollbar (glass-themed) ─── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+  background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+  background-clip: content-box;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }

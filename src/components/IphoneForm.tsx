@@ -20,22 +20,25 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
 
   const availableColors = IPHONE_COLORS_BY_MODEL[selectedModel] || [];
 
+  const glassInput = "mt-1 block w-full bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/40 dark:border-white/[0.08] rounded-2xl p-2.5 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/30 focus:border-blue-300/50 dark:focus:border-blue-400/20 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]";
+  const glassSelect = `${glassInput} appearance-none cursor-pointer`;
+
   return (
-    <div className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-all">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 w-full max-w-md border border-gray-200 dark:border-gray-800 animate-in fade-in zoom-in duration-200">
+    <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-xl flex items-center justify-center p-4 z-[70] transition-all duration-500">
+      <div className="bg-white/70 dark:bg-white/[0.08] backdrop-blur-2xl rounded-[2rem] shadow-[0_24px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.4)] p-6 w-full max-w-md border border-white/50 dark:border-white/[0.1] animate-in fade-in zoom-in-95 duration-300">
         <h2 className="text-2xl font-black mb-6 text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
           {iphone ? (
-            <>
-              <Edit2 className="w-6 h-6 text-blue-500" />
-              Editar iPhone
-            </>
+            <div className="w-10 h-10 bg-blue-500/10 dark:bg-blue-500/20 rounded-xl flex items-center justify-center border border-blue-500/20 backdrop-blur-sm">
+              <Edit2 className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+            </div>
           ) : (
-            <>
-              <Smartphone className="w-6 h-6 text-green-500" />
-              Nuevo iPhone
-            </>
+            <div className="w-10 h-10 bg-emerald-500/10 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center border border-emerald-500/20 backdrop-blur-sm">
+              <Smartphone className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
+            </div>
           )}
+          {iphone ? 'Editar iPhone' : 'Nuevo iPhone'}
         </h2>
+        
         <form
           action={async (formData) => {
             if (iphone) {
@@ -48,11 +51,11 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
           className="space-y-4"
         >
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Sucursal</label>
+            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Sucursal</label>
             <select
               name="branchId"
               defaultValue={iphone?.branchId || branches[0]?.id}
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+              className={glassSelect}
             >
               {branches.map((b) => (
                 <option key={b.id} value={b.id}>
@@ -64,13 +67,13 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Modelo</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Modelo</label>
               <select
                 name="model"
                 required
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={glassSelect}
               >
                 {IPHONE_MODELS.map((model) => (
                   <option key={model} value={model}>
@@ -80,12 +83,12 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Color</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Color</label>
               <select
                 name="color"
                 key={selectedModel}
                 defaultValue={availableColors.includes(iphone?.color || '') ? iphone?.color || '' : ''}
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={glassSelect}
               >
                 <option value="">(Sin asignar)</option>
                 {availableColors.map((color) => (
@@ -99,12 +102,12 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Capacidad</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Capacidad</label>
               <select
                 name="capacity"
                 required
                 defaultValue={iphone?.capacity || IPHONE_CAPACITIES[1]}
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={glassSelect}
               >
                 {IPHONE_CAPACITIES.map((cap) => (
                   <option key={cap} value={cap}>
@@ -114,40 +117,40 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">IMEI</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">IMEI</label>
               <input
                 type="text"
                 name="imei"
                 defaultValue={iphone?.imei || ''}
                 placeholder="15 dígitos"
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 font-mono focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={`${glassInput} font-mono`}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Batería Estado</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Batería Estado</label>
               <select
                 name="batteryStatus"
                 value={batteryStatus}
                 onChange={(e) => setBatteryStatus(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={glassSelect}
               >
                 <option value="Original">Original</option>
                 <option value="Nueva 100%">Nueva 100%</option>
               </select>
             </div>
             {batteryStatus === 'Original' && (
-              <div className="space-y-1.5">
-                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Porcentaje</label>
+              <div className="space-y-1.5 animate-in fade-in slide-in-from-left-2 duration-200">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Porcentaje</label>
                 <input
                   type="number"
                   name="batteryPercentage"
                   required
                   defaultValue={iphone?.batteryPercentage ?? undefined}
                   placeholder="%"
-                  className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                  className={glassInput}
                 />
               </div>
             )}
@@ -155,7 +158,7 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Precio Base</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Precio Base</label>
               <input
                 type="number"
                 name="price"
@@ -163,15 +166,15 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
                 step="0.01"
                 defaultValue={iphone?.price}
                 placeholder="0.00"
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 font-bold focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={`${glassInput} font-bold`}
               />
             </div>
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Descuento</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Descuento</label>
               <select
                 name="discountType"
                 defaultValue={iphone?.discountType || 'N/A'}
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+                className={glassSelect}
               >
                 <option value="N/A">N/A (Ninguno)</option>
                 <option value="OFF1">OFF1 (-20.000)</option>
@@ -181,11 +184,11 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Observaciones</label>
+            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Observaciones</label>
             <textarea
               name="observations"
               defaultValue={iphone?.observations ?? undefined}
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-sm text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:outline-none transition-all"
+              className={`${glassInput} resize-none`}
               rows={2}
             />
           </div>
@@ -194,13 +197,13 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all active:scale-95"
+              className="flex-1 py-3 bg-white/50 dark:bg-white/[0.08] backdrop-blur-xl text-gray-800 dark:text-gray-200 font-bold rounded-2xl hover:bg-white/70 dark:hover:bg-white/[0.12] transition-all duration-300 active:scale-95 border border-white/40 dark:border-white/[0.06]"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex-1 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:bg-black dark:hover:bg-gray-100 transition-all shadow-lg active:scale-95"
+              className="flex-1 py-3 bg-blue-500/80 dark:bg-blue-500/60 backdrop-blur-xl text-white font-bold rounded-2xl hover:bg-blue-600/90 dark:hover:bg-blue-500/70 transition-all duration-300 shadow-lg shadow-blue-500/20 active:scale-95 border border-blue-400/30 dark:border-blue-400/20"
             >
               {iphone ? 'Guardar Cambios' : 'Crear iPhone'}
             </button>
