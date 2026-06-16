@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createCatalogPrice, deleteCatalogPrice } from '@/lib/priceActions';
 import { Plus, Trash2, Edit2, Check, X, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
 import { CatalogPrice } from '@prisma/client';
-import { IPHONE_MODELS, IPHONE_CAPACITIES, IPHONE_COLORS_BY_MODEL } from '@/lib/constants';
+import { IPHONE_MODELS, IPHONE_CAPACITIES, IPHONE_COLORS_BY_MODEL, IPHONE_CAPACITIES_BY_MODEL } from '@/lib/constants';
 
 export default function PriceList({ initialPrices }: { initialPrices: CatalogPrice[] }) {
   const [prices, setPrices] = useState(initialPrices);
@@ -91,7 +91,8 @@ export default function PriceList({ initialPrices }: { initialPrices: CatalogPri
   
   // First, populate all combinations as stubs
   IPHONE_MODELS.forEach(m => {
-    IPHONE_CAPACITIES.forEach(c => {
+    const capacities = IPHONE_CAPACITIES_BY_MODEL[m] || IPHONE_CAPACITIES;
+    capacities.forEach(c => {
       const key = `${m} - ${c}`;
       groupedPrices[key] = [{
         id: Math.floor(Math.random() * -1000000), // Synthetic negative ID
@@ -139,9 +140,10 @@ export default function PriceList({ initialPrices }: { initialPrices: CatalogPri
   });
 
   const glassPanel = "bg-white/60 dark:bg-white/[0.06] backdrop-blur-2xl border border-white/40 dark:border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.05)]";
-  const glassInput = "w-full px-4 py-3 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/40 dark:border-white/[0.08] rounded-2xl text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/30 focus:border-blue-300/50 dark:focus:border-blue-400/20 outline-none transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]";
+  const glassInput = "w-full px-4 py-3 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/40 dark:border-white/[0.08] rounded-2xl text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/30 focus:border-blue-300/50 dark:focus:border-blue-400/20 outline-none transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] [&>option]:text-gray-900 [&>option]:bg-white dark:[&>option]:text-white dark:[&>option]:bg-gray-900";
 
   return (
+    <>
     <div className={`rounded-[2rem] ${glassPanel} overflow-hidden transition-all duration-500`}>
       <div className="p-5 md:p-8 border-b border-white/20 dark:border-white/[0.06] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/30 dark:bg-white/[0.02]">
         <div>
@@ -159,6 +161,82 @@ export default function PriceList({ initialPrices }: { initialPrices: CatalogPri
       </div>
 
       <div className="p-4 md:p-8">
+
+
+        <div className="space-y-4">
+          {sortedSeries.map(seriesName => (
+            <div key={seriesName} className="rounded-[1.5rem] border border-white/40 dark:border-white/[0.08] bg-white/40 dark:bg-white/[0.04] backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] overflow-hidden transition-all duration-300">
+              <button 
+                onClick={() => toggleSeries(seriesName)}
+                className="w-full flex justify-between items-center p-5 hover:bg-white/50 dark:hover:bg-white/[0.06] transition-colors"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 font-black border border-blue-500/20 shadow-sm">
+                    {seriesName.replace(/\D/g, '') || '?'}
+                  </div>
+                  <span className="font-bold text-lg text-gray-900 dark:text-white tracking-tight">{seriesName}</span>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-white/50 dark:bg-white/10 flex items-center justify-center border border-white/40 dark:border-white/[0.05]">
+                  {expandedSeries[seriesName] ? (
+                    <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                  )}
+                </div>
+              </button>
+              
+              {expandedSeries[seriesName] && (
+                <div className="p-4 space-y-4 bg-white/20 dark:bg-black/10 border-t border-white/20 dark:border-white/[0.05]">
+                  {Object.entries(groupedBySeries[seriesName]).map(([groupKey, groupPrices]) => (
+                    <div key={groupKey} className="rounded-2xl border border-white/40 dark:border-white/[0.06] bg-white/60 dark:bg-white/[0.04] backdrop-blur-md overflow-hidden shadow-sm">
+                      <div className="px-5 py-3 font-bold text-sm text-gray-800 dark:text-gray-200 border-b border-white/30 dark:border-white/[0.05] bg-white/40 dark:bg-white/[0.02]">
+                        {groupKey}
+                      </div>
+                      <div className="divide-y divide-white/20 dark:divide-white/[0.04]">
+                        {groupPrices.map(p => (
+                          <div key={p.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-5 hover:bg-white/40 dark:hover:bg-white/[0.04] transition-colors gap-3 sm:gap-4 group">
+                            <div className="flex items-center w-full sm:w-auto">
+                              <span className={`text-xs font-bold px-3 py-1.5 rounded-lg border backdrop-blur-sm ${p.color ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20' : 'bg-gray-500/10 text-gray-700 dark:text-gray-300 border-gray-500/20'}`}>
+                                {p.color || 'Todos los colores'}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-4 sm:gap-6 pt-3 sm:pt-0">
+                              {p.id < 0 ? (
+                                <span className="font-black text-lg text-gray-400 dark:text-gray-500 italic">Sin precio</span>
+                              ) : (
+                                <span className="font-black text-lg text-gray-900 dark:text-white">{formatCurrency(p.price)}</span>
+                              )}
+                              <div className="flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                                <button 
+                                  onClick={() => startEdit({ ...p, price: p.price || '' } as any)}
+                                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 rounded-xl transition-all border border-transparent hover:border-blue-500/20"
+                                >
+                                  <Edit2 className="w-4 h-4" />
+                                </button>
+                                {p.id >= 0 && (
+                                  <button 
+                                    onClick={() => handleDelete(p.id)}
+                                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    
+    {/* Modal for adding/editing price moved outside to fix stacking context issues */}
         {(isAdding || editingId) && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-xl transition-all duration-500">
             <div className="bg-white/70 dark:bg-white/[0.08] backdrop-blur-2xl rounded-[2rem] shadow-[0_24px_80px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.4)] border border-white/50 dark:border-white/[0.1] w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-300">
@@ -262,78 +340,6 @@ export default function PriceList({ initialPrices }: { initialPrices: CatalogPri
             </div>
           </div>
         )}
-
-        <div className="space-y-4">
-          {sortedSeries.map(seriesName => (
-            <div key={seriesName} className="rounded-[1.5rem] border border-white/40 dark:border-white/[0.08] bg-white/40 dark:bg-white/[0.04] backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.02)] overflow-hidden transition-all duration-300">
-              <button 
-                onClick={() => toggleSeries(seriesName)}
-                className="w-full flex justify-between items-center p-5 hover:bg-white/50 dark:hover:bg-white/[0.06] transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 font-black border border-blue-500/20 shadow-sm">
-                    {seriesName.replace(/\D/g, '') || '?'}
-                  </div>
-                  <span className="font-bold text-lg text-gray-900 dark:text-white tracking-tight">{seriesName}</span>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-white/50 dark:bg-white/10 flex items-center justify-center border border-white/40 dark:border-white/[0.05]">
-                  {expandedSeries[seriesName] ? (
-                    <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  )}
-                </div>
-              </button>
-              
-              {expandedSeries[seriesName] && (
-                <div className="p-4 space-y-4 bg-white/20 dark:bg-black/10 border-t border-white/20 dark:border-white/[0.05]">
-                  {Object.entries(groupedBySeries[seriesName]).map(([groupKey, groupPrices]) => (
-                    <div key={groupKey} className="rounded-2xl border border-white/40 dark:border-white/[0.06] bg-white/60 dark:bg-white/[0.04] backdrop-blur-md overflow-hidden shadow-sm">
-                      <div className="px-5 py-3 font-bold text-sm text-gray-800 dark:text-gray-200 border-b border-white/30 dark:border-white/[0.05] bg-white/40 dark:bg-white/[0.02]">
-                        {groupKey}
-                      </div>
-                      <div className="divide-y divide-white/20 dark:divide-white/[0.04]">
-                        {groupPrices.map(p => (
-                          <div key={p.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-5 hover:bg-white/40 dark:hover:bg-white/[0.04] transition-colors gap-3 sm:gap-4 group">
-                            <div className="flex items-center w-full sm:w-auto">
-                              <span className={`text-xs font-bold px-3 py-1.5 rounded-lg border backdrop-blur-sm ${p.color ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20' : 'bg-gray-500/10 text-gray-700 dark:text-gray-300 border-gray-500/20'}`}>
-                                {p.color || 'Todos los colores'}
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-4 sm:gap-6 pt-3 sm:pt-0">
-                              {p.id < 0 ? (
-                                <span className="font-black text-lg text-gray-400 dark:text-gray-500 italic">Sin precio</span>
-                              ) : (
-                                <span className="font-black text-lg text-gray-900 dark:text-white">{formatCurrency(p.price)}</span>
-                              )}
-                              <div className="flex gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-                                <button 
-                                  onClick={() => startEdit({ ...p, price: p.price || '' } as any)}
-                                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 rounded-xl transition-all border border-transparent hover:border-blue-500/20"
-                                >
-                                  <Edit2 className="w-4 h-4" />
-                                </button>
-                                {p.id >= 0 && (
-                                  <button 
-                                    onClick={() => handleDelete(p.id)}
-                                    className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

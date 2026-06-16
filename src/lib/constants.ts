@@ -18,7 +18,6 @@ export const IPHONE_MODELS = [
   'iPhone 16 Pro',
   'iPhone 16 Pro Max',
   'iPhone 17',
-  'iPhone 17 Slim/Air',
   'iPhone 17 Pro',
   'iPhone 17 Pro Max',
 ];
@@ -28,7 +27,32 @@ export const IPHONE_CAPACITIES = [
   '256GB',
   '512GB',
   '1TB',
+  '2TB',
 ];
+
+export const IPHONE_CAPACITIES_BY_MODEL: Record<string, string[]> = {
+  'iPhone 12': ['128GB', '256GB'],
+  'iPhone 12 Pro': ['128GB', '256GB', '512GB'],
+  'iPhone 12 Pro Max': ['128GB', '256GB', '512GB'],
+  'iPhone 13': ['128GB', '256GB', '512GB'],
+  'iPhone 13 Pro': ['128GB', '256GB', '512GB', '1TB'],
+  'iPhone 13 Pro Max': ['128GB', '256GB', '512GB', '1TB'],
+  'iPhone 14': ['128GB', '256GB', '512GB'],
+  'iPhone 14 Plus': ['128GB', '256GB', '512GB'],
+  'iPhone 14 Pro': ['128GB', '256GB', '512GB', '1TB'],
+  'iPhone 14 Pro Max': ['128GB', '256GB', '512GB', '1TB'],
+  'iPhone 15': ['128GB', '256GB', '512GB'],
+  'iPhone 15 Plus': ['128GB', '256GB', '512GB'],
+  'iPhone 15 Pro': ['128GB', '256GB', '512GB', '1TB'],
+  'iPhone 15 Pro Max': ['256GB', '512GB', '1TB'],
+  'iPhone 16': ['128GB', '256GB', '512GB'],
+  'iPhone 16 Plus': ['128GB', '256GB', '512GB'],
+  'iPhone 16 Pro': ['128GB', '256GB', '512GB', '1TB'],
+  'iPhone 16 Pro Max': ['256GB', '512GB', '1TB'],
+  'iPhone 17': ['256GB', '512GB'],
+  'iPhone 17 Pro': ['256GB', '512GB', '1TB'],
+  'iPhone 17 Pro Max': ['256GB', '512GB', '1TB', '2TB'],
+};
 
 export const IPHONE_COLORS_BY_MODEL: Record<string, string[]> = {
   'iPhone 12': ['Negro', 'Blanco', 'PRODUCT(RED)', 'Azul', 'Verde', 'Púrpura'],
@@ -50,7 +74,6 @@ export const IPHONE_COLORS_BY_MODEL: Record<string, string[]> = {
   'iPhone 16 Pro': ['Titanio Negro', 'Titanio Blanco', 'Titanio Natural', 'Titanio Desierto'],
   'iPhone 16 Pro Max': ['Titanio Negro', 'Titanio Blanco', 'Titanio Natural', 'Titanio Desierto'],
   'iPhone 17': ['Lavanda', 'Sage (Verde Sabio)', 'Mist Blue (Azul Niebla)', 'Blanco', 'Negro'],
-  'iPhone 17 Slim/Air': ['Lavanda', 'Sage (Verde Sabio)', 'Mist Blue (Azul Niebla)', 'Blanco', 'Negro'],
   'iPhone 17 Pro': ['Silver (Plata)', 'Deep Blue (Azul Profundo)', 'Cosmic Orange (Naranja Cósmico)'],
   'iPhone 17 Pro Max': ['Silver (Plata)', 'Deep Blue (Azul Profundo)', 'Cosmic Orange (Naranja Cósmico)'],
 };

@@ -6,7 +6,7 @@ import { Edit2, Smartphone } from 'lucide-react';
 
 import { Branch, Iphone } from '@/lib/types';
 
-import { IPHONE_MODELS, IPHONE_CAPACITIES, IPHONE_COLORS_BY_MODEL } from '@/lib/constants';
+import { IPHONE_MODELS, IPHONE_CAPACITIES, IPHONE_COLORS_BY_MODEL, IPHONE_CAPACITIES_BY_MODEL } from '@/lib/constants';
 
 interface IphoneFormProps {
   iphone?: Iphone | null;
@@ -19,8 +19,9 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
   const [batteryStatus, setBatteryStatus] = useState(iphone?.batteryStatus || 'Original');
 
   const availableColors = IPHONE_COLORS_BY_MODEL[selectedModel] || [];
+  const availableCapacities = IPHONE_CAPACITIES_BY_MODEL[selectedModel] || IPHONE_CAPACITIES;
 
-  const glassInput = "mt-1 block w-full bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/40 dark:border-white/[0.08] rounded-2xl p-2.5 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/30 focus:border-blue-300/50 dark:focus:border-blue-400/20 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]";
+  const glassInput = "mt-1 block w-full bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/40 dark:border-white/[0.08] rounded-2xl p-2.5 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/30 focus:border-blue-300/50 dark:focus:border-blue-400/20 transition-all duration-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] [&>option]:text-gray-900 [&>option]:bg-white dark:[&>option]:text-white dark:[&>option]:bg-gray-900";
   const glassSelect = `${glassInput} appearance-none cursor-pointer`;
 
   return (
@@ -104,12 +105,13 @@ export default function IphoneForm({ iphone, branches, onClose }: IphoneFormProp
             <div className="space-y-1.5">
               <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Capacidad</label>
               <select
+                key={selectedModel}
                 name="capacity"
                 required
-                defaultValue={iphone?.capacity || IPHONE_CAPACITIES[1]}
+                defaultValue={availableCapacities.includes(iphone?.capacity || '') ? iphone?.capacity || '' : availableCapacities[0]}
                 className={glassSelect}
               >
-                {IPHONE_CAPACITIES.map((cap) => (
+                {availableCapacities.map((cap) => (
                   <option key={cap} value={cap}>
                     {cap}
                   </option>
