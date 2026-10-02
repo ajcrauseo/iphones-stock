@@ -38,12 +38,21 @@ export default async function HomePage() {
           <span className="text-[10px] font-semibold px-2.5 py-1 bg-white/40 dark:bg-white/[0.08] backdrop-blur-md text-gray-600 dark:text-gray-300 rounded-full uppercase tracking-widest hidden sm:inline-block border border-white/30 dark:border-white/[0.06]">
             {session.role}
           </span>
-          <form action={logout}>
-            <button className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 px-2.5 py-1.5 rounded-xl hover:bg-red-50/50 dark:hover:bg-red-500/10">
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline font-medium">Salir</span>
-            </button>
-          </form>
+          {session.role === 'admin' ? (
+            <form action={logout}>
+              <button className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-200 px-2.5 py-1.5 rounded-xl hover:bg-red-50/50 dark:hover:bg-red-500/10">
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline font-medium">Salir</span>
+              </button>
+            </form>
+          ) : (
+            <a
+              href="/login"
+              className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200 px-2.5 py-1.5 rounded-xl hover:bg-blue-50/50 dark:hover:bg-blue-500/10"
+            >
+              <span className="hidden sm:inline font-medium">Admin</span>
+            </a>
+          )}
         </div>
       </nav>
 

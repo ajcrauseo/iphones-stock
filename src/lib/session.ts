@@ -7,7 +7,7 @@ export interface SessionData {
 
 export const defaultSession: SessionData = {
   role: 'viewer',
-  isLoggedIn: false,
+  isLoggedIn: true,
 };
 
 export const sessionOptions: SessionOptions = {

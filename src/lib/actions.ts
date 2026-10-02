@@ -21,15 +21,9 @@ export async function login(formData: FormData) {
   const session = await getSession();
 
   const adminPass = process.env.ADMIN_PASSWORD;
-  const viewerPass = process.env.VIEWER_PASSWORD;
-
+  // Only admin password needed now; viewers have default read access
   if (adminPass && password === adminPass) {
     session.role = 'admin';
-    session.isLoggedIn = true;
-    await session.save();
-    redirect('/');
-  } else if (viewerPass && password === viewerPass) {
-    session.role = 'viewer';
     session.isLoggedIn = true;
     await session.save();
     redirect('/');

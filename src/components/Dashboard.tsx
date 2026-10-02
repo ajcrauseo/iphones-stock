@@ -117,7 +117,7 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Stock iPhones</h1>
-          <p className="text-gray-500 dark:text-gray-400 font-medium">Gestión de inventario profesional</p>
+          <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/15 rounded-lg px-2 py-1 mt-2 inline-block">Consultar por cuotas y métodos de pagos actualizados por Teams, esta es una aplicación de referencia</p>
         </div>
         {role === 'admin' && (
           <div className="flex gap-2 w-full md:w-auto">
@@ -382,6 +382,7 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
                 const contado = price * 0.85;
                 const cuotas3 = price / 3;
                 const cuotas6 = price / 6;
+                const cuotas9 = price / 9;
                 const discountLabel = iphone.discountType !== 'N/A' ? iphone.discountType : 'N/A';
 
                 return (
@@ -466,6 +467,7 @@ export default function Dashboard({ branches, initialIphones, role }: DashboardP
                       <div className="space-y-1 flex flex-col items-center">
                         <div className="text-xs font-bold text-gray-700 dark:text-gray-300">{formatCurrency(cuotas3)} <span className="text-[8px] text-gray-400">(3x)</span></div>
                         <div className="text-xs font-bold text-gray-700 dark:text-gray-300">{formatCurrency(cuotas6)} <span className="text-[8px] text-gray-400">(6x)</span></div>
+                        <div className="text-xs font-bold text-gray-700 dark:text-gray-300">{formatCurrency(cuotas9)} <span className="text-[8px] text-gray-400">(9x)</span></div>
                       </div>
                     </td>
                     <td className="px-4 py-4">
